@@ -2,29 +2,27 @@ import Link from "next/link";
 
 import { EmptyHeartIcon } from "@/assets/icon/EmptyHeart";
 import { TimeIcon } from "@/assets/icon/TimeIcon";
+import { HitsModel } from "@/service/models/HitsModel";
 import { getElapsedTime } from "@/utils/utils";
 import styles from "./News.module.css";
 
-type NewsProps = {
-  author: string;
-  title: string;
-  url: string;
-  createdAt: string;
-};
-
-export function NewsComponent(props: NewsProps) {
-  const elapsedTime = getElapsedTime(props.createdAt);
+export function NewsComponent(news: HitsModel) {
+  const elapsedTime = getElapsedTime(news.created_at!);
   return (
     <article className={styles.newsContainer}>
       <div className={styles.newsBody}>
         <div className={styles.newsHeader}>
           <TimeIcon />
           <p>
-            {elapsedTime} by {props.author}
+            {elapsedTime} by {news.author}
           </p>
         </div>
-        <Link className={styles.newsTitle} href={props.url} target="_blank">
-          <p>{props.title}</p>
+        <Link
+          className={styles.newsTitle}
+          href={news.story_url!}
+          target="_blank"
+        >
+          <p>{news.story_title}</p>
         </Link>
       </div>
       <div className={styles.buttonSide}>
