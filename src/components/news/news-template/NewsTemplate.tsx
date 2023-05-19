@@ -1,12 +1,28 @@
+import { useState } from "react";
+
 import Link from "next/link";
 
 import { EmptyHeartIcon } from "@/assets/icon/EmptyHeart";
+import { FilledHeartIcon } from "@/assets/icon/FilledHeart";
 import { TimeIcon } from "@/assets/icon/TimeIcon";
 import { HitsModel } from "@/service/models/HitsModel";
+import { useFavesStore } from "@/stores/faves-store";
 import { getElapsedTime } from "@/utils/utils";
-import styles from "./News.module.css";
+import styles from "./NewsTemplate.module.css";
 
-export function NewsComponent(news: HitsModel) {
+type NewsProps = {
+  news: HitsModel;
+};
+
+export function NewsTemplate({ news }: NewsProps) {
+  const { isSaved, saveNews, removeNews } = useFavesStore();
+  const [isFav, setIsFav] = useState<boolean>(isSaved(news));
+
+  const handleFav = () => {
+    isFav ? removeNews(news) : saveNews(news);
+    setIsFav(!isFav);
+  };
+
   const elapsedTime = getElapsedTime(news.created_at!);
   return (
     <article className={styles.newsContainer}>
@@ -26,8 +42,8 @@ export function NewsComponent(news: HitsModel) {
         </Link>
       </div>
       <div className={styles.buttonSide}>
-        <button>
-          <EmptyHeartIcon />
+        <button onClick={handleFav}>
+          {isFav ? <FilledHeartIcon /> : <EmptyHeartIcon />}
         </button>
       </div>
     </article>

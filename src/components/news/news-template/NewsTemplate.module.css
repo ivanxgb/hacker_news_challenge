@@ -2,12 +2,12 @@
     display: flex;
     border-radius: 8px;
     border: solid 2px var(--news-border);
-    max-width: 60rem;
     background-color: white;
 }
 
 .newsBody {
     width: 90%;
+    align-self: center;
     margin: 2rem;
 }
 
