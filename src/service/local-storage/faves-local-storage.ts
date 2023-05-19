@@ -1,8 +1,8 @@
 import { HitsModel } from "@/service/models/HitsModel";
 
 // Class to manage local storage interactions
-export class LocalStorage {
-  private static instance: LocalStorage;
+export class FavesLocalStorage {
+  private static instance: FavesLocalStorage;
 
   private readonly _savedNews: HitsModel[] = [];
 
@@ -15,13 +15,13 @@ export class LocalStorage {
     return this._savedNews;
   }
 
-  // get instance of LocalStorage using singleton pattern
-  public static getInstance(key: string): LocalStorage {
-    if (!LocalStorage.instance) {
-      LocalStorage.instance = new LocalStorage(key);
+  // get instance of FavesLocalStorage using singleton pattern
+  public static getInstance(key: string): FavesLocalStorage {
+    if (!FavesLocalStorage.instance || FavesLocalStorage.instance.key !== key) {
+      FavesLocalStorage.instance = new FavesLocalStorage(key);
     }
 
-    return LocalStorage.instance;
+    return FavesLocalStorage.instance;
   }
 
   // save news to local storage
