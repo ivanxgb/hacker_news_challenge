@@ -5,10 +5,14 @@
     background-color: white;
 }
 
+.newsContainer:hover {
+    opacity: 0.5;
+}
+
 .newsBody {
     width: 90%;
     align-self: center;
-    margin: 2rem;
+    padding: 2rem;
 }
 
 .newsBody > .newsHeader {
