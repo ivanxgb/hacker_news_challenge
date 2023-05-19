@@ -2,6 +2,7 @@ import { create } from "zustand";
 
 import { getHackerNews } from "@/service/requester/api";
 import { HitsModel } from "@/service/models/HitsModel";
+import { NewsLocalStorage } from "@/service/local-storage/news-local-storage";
 
 type NewsStore = {
   news: HitsModel[];
@@ -12,10 +13,15 @@ type NewsStore = {
   getNews: (queryTerm: string) => void;
 };
 
+const key = "news-filter";
+
 // create store using zustand library for global state management
+// this store manages news and news search term
+// it communicates with NewsLocalStorage class to save and get news search term
+// it communicates with getHackerNews function to get news from API
 export const useNewsStore = create<NewsStore>((set, get) => ({
   news: [],
-  newsSearchTerm: "",
+  newsSearchTerm: NewsLocalStorage.getInstance(key).getFilterSelected(),
   newsPage: 0,
   getNews: async (queryTerm: string) => {
     const response = await getHackerNews(queryTerm, get().newsPage);
@@ -23,8 +29,10 @@ export const useNewsStore = create<NewsStore>((set, get) => ({
 
     set({ news: [...get().news, ...hits] });
   },
-  setNewsSearchTerm: (searchTerm: string) =>
-    set({ newsSearchTerm: searchTerm, newsPage: 0, news: [] }),
+  setNewsSearchTerm: (searchTerm: string) => {
+    set({ newsSearchTerm: searchTerm, newsPage: 0, news: [] });
+    NewsLocalStorage.getInstance(key).saveFilterSelected(searchTerm);
+  },
   incrementPage: () => set({ newsPage: get().newsPage + 1 }),
 }));
 
