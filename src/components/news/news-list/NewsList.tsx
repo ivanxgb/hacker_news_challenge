@@ -11,7 +11,9 @@ export function NewsListComponent({ news }: NewsListProps) {
   return (
     <div className={styles.content}>
       {news.length > 0 &&
-        news.map((news) => <NewsTemplate key={news.created_at} news={news} />)}
+        news.map((news, i) => (
+          <NewsTemplate key={`${i}${news.created_at}`} news={news} />
+        ))}
     </div>
   );
 }

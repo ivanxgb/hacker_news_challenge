@@ -1,6 +1,6 @@
 import { HitsModel } from "@/service/models/HitsModel";
 import { create } from "zustand";
-import { LocalStorage } from "@/service/local-storage/local-storage";
+import { FavesLocalStorage } from "@/service/local-storage/faves-local-storage";
 
 type FavesStore = {
   news: HitsModel[];
@@ -13,20 +13,21 @@ type FavesStore = {
 const key = "faves";
 
 // useFavesStore is a zustand store that manages news saved in local storage (faves)
-// it communicates with LocalStorage class to save, remove and check if news is already saved
+// it communicates with FavesLocalStorage class to save, remove and check if news is already saved
 export const useFavesStore = create<FavesStore>((set) => ({
-  news: LocalStorage.getInstance(key).savedNews,
-  isSaved: (news: HitsModel) => LocalStorage.getInstance(key).hasNews(news),
+  news: FavesLocalStorage.getInstance(key).savedNews,
+  isSaved: (news: HitsModel) =>
+    FavesLocalStorage.getInstance(key).hasNews(news),
   removeNews: (news: HitsModel) => {
-    LocalStorage.getInstance(key).removeNews(news);
+    FavesLocalStorage.getInstance(key).removeNews(news);
     set({
-      news: LocalStorage.getInstance(key).savedNews,
+      news: FavesLocalStorage.getInstance(key).savedNews,
     });
   },
   saveNews: (news: HitsModel) => {
-    LocalStorage.getInstance(key).saveNews(news);
+    FavesLocalStorage.getInstance(key).saveNews(news);
     set({
-      news: LocalStorage.getInstance(key).savedNews,
+      news: FavesLocalStorage.getInstance(key).savedNews,
     });
   },
 }));
