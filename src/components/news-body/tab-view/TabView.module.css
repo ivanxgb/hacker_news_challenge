@@ -1,0 +1,41 @@
+.tabContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    margin-top: 8rem;
+}
+
+.tabBar {
+    margin: 0 auto;
+    display: flex;
+}
+
+.tabBar button {
+    width: 8rem;
+    height: 3rem;
+    border-radius: 4px;
+    background-color: transparent;
+    border: 1px solid var(--news-border);
+    font-size: 1.4rem;
+    color: #606060;
+    cursor: pointer;
+    transition: all 0.4s;
+}
+
+.tabBar .active {
+    color: var(--azure);
+    border-color: var(--azure);
+}
+
+.tabContent {
+    width: 100%;
+    padding: 0 5%;
+    margin-top: 2rem;
+}
+
+.tabContent .hidden {
+    display: none;
+}
+
