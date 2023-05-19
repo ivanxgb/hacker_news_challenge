@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useState } from "react";
+import React, { ReactNode, useState } from "react";
 
 import styles from "./TabView.module.css";
 
@@ -32,14 +32,7 @@ export function TabView({ tabs }: TabViewProps) {
         ))}
       </div>
       <div className={styles.tabContent}>
-        {tabs.map((tab) => (
-          <div
-            key={tab.label}
-            className={tab.label === activeTab ? "" : styles.hidden}
-          >
-            {tab.content}
-          </div>
-        ))}
+        {tabs.find((tab) => tab.label === activeTab)?.content}
       </div>
     </div>
   );

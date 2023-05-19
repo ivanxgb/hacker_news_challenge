@@ -29,6 +29,12 @@
     border-color: var(--azure);
 }
 
+.tabContent {
+    width: 100%;
+    padding: 0 5%;
+    margin-top: 2rem;
+}
+
 .tabContent .hidden {
     display: none;
 }
