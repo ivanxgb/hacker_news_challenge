@@ -1,0 +1,25 @@
+.tabAllContainer {
+    width: 100%;
+}
+
+.selector {
+    width: 20rem;
+    height: 3rem;
+    margin-bottom: 2rem;
+    padding-left: 1rem;
+    background-color: white;
+    border-color: var(--news-border);
+    font-size: 1.4rem;
+    border-radius: 4px;
+    color: #343434;
+}
+
+.selector option {
+    padding: 10px;
+    background-color: #ffffff;
+}
+
+.selector option:hover {
+    background-color: #f2f2f2;
+}
+
