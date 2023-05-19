@@ -26,7 +26,7 @@ export function NewsTemplate({ news }: NewsProps) {
   const elapsedTime = getElapsedTime(news.created_at!);
   return (
     <article className={styles.newsContainer}>
-      <div className={styles.newsBody}>
+      <Link className={styles.newsBody} href={news.story_url!} target="_blank">
         <div className={styles.newsHeader}>
           <TimeIcon />
           <p>
@@ -40,7 +40,8 @@ export function NewsTemplate({ news }: NewsProps) {
         >
           <p>{news.story_title}</p>
         </Link>
-      </div>
+      </Link>
+
       <div className={styles.buttonSide}>
         <button onClick={handleFav}>
           {isFav ? <FilledHeartIcon /> : <EmptyHeartIcon />}
