@@ -1,28 +1,67 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useRef } from "react";
 
 import { NewsListComponent } from "@/components/news/news-list/NewsList";
 import { useNewsStore } from "@/stores/news-store";
+import { debounce } from "@/utils/utils";
 import styles from "./TabAll.module.css";
 
 const newsSelector = ["React", "Vue", "Angular"];
 
 export function TabAll() {
-  const [selectedValue, setSelectedValue] = useState<string>("");
-  const { news, getNews } = useNewsStore();
+  const { news, newsSearchTerm, getNews, incrementPage, setNewsSearchTerm } =
+    useNewsStore();
+  const observerRef = useRef<HTMLDivElement | null>(null);
+
+  /**
+   * Intersection Observer callback function.
+   * Invoked when the observed element becomes visible in the viewport.
+   * Fetches more news based on the current search term.
+   */
+  const callbackIntersect = (entries: IntersectionObserverEntry[]) => {
+    const [entry] = entries;
+    if (entry.isIntersecting) {
+      debounce(() => {
+        incrementPage();
+        getNews(newsSearchTerm);
+      }, 800)();
+    }
+  };
+
+  const options = {
+    rootMargin: "100px",
+    threshold: 1,
+  };
 
   const handleDropdownChange = ({ target }: ChangeEvent<HTMLSelectElement>) => {
-    setSelectedValue(target.value);
+    setNewsSearchTerm(target.value);
   };
 
   useEffect(() => {
-    selectedValue !== "" && getNews(selectedValue);
-  }, [selectedValue]);
+    if (newsSearchTerm === "" || news.length === 0) return;
+
+    // Create a new Intersection Observer instance
+    const observer = new IntersectionObserver(callbackIntersect, options);
+
+    // Observe the observerRef element if it exists
+    observerRef.current && observer.observe(observerRef.current);
+
+    // Clean up the observer when the component unmounts or the dependencies change
+    return () => {
+      observer.disconnect();
+    };
+  }, [observerRef, options]);
+
+  useEffect(() => {
+    if (newsSearchTerm !== "" && news.length === 0) {
+      getNews(newsSearchTerm);
+    }
+  }, [newsSearchTerm]);
 
   return (
     <div className={styles.tabAllContainer}>
       <select
         className={styles.selector}
-        value={selectedValue}
+        value={newsSearchTerm}
         onChange={handleDropdownChange}
       >
         <option className={styles.customSelect} value="">
@@ -39,6 +78,7 @@ export function TabAll() {
         ))}
       </select>
       <NewsListComponent news={news} />
+      <div ref={observerRef} />
     </div>
   );
 }
