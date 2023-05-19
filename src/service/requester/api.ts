@@ -1,24 +1,26 @@
 import { HackerNewsAPIResponse } from "@/service/models/HitsModel";
 
-export class HackerNewsApi {
-  private baseUrl = "https://hn.algolia.com/api/v1";
-  private endpoint = "/search_by_date";
-  private query = "?query=";
-  private page = "&page=";
+const baseUrl = "https://hn.algolia.com/api/v1";
+const endpoint = "/search_by_date";
+const query = "?query=";
+const queryPage = "&page=";
 
-  async getHackerNews(
-    queryTerm: string,
-    page: number = 0,
-  ): Promise<HackerNewsAPIResponse | null> {
-    try {
-      const response = await fetch(
-        `${this.baseUrl}${this.endpoint}${this.query}${queryTerm}${this.page}${page}`,
-      );
-      const data = await response.json();
-      return data.hits;
-    } catch (error) {
-      console.error(error);
+export async function getHackerNews(
+  queryTerm: string,
+  page: number = 0,
+): Promise<HackerNewsAPIResponse | null> {
+  try {
+    const url = `${baseUrl}${endpoint}${query}${queryTerm}${queryPage}${page}`; // format url
+
+    const response = await fetch(url);
+
+    if (!response.ok) {
       return null;
     }
+
+    // cast response to HackerNewsAPIResponse
+    return (await response.json()) as HackerNewsAPIResponse;
+  } catch (error) {
+    return null;
   }
 }
