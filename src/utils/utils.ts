@@ -20,6 +20,7 @@ function parseElapsedTime(seconds: number) {
   return `${days} days ago`;
 }
 
+// getElapsedTime receives a date string and returns the elapsed time since that date
 export function getElapsedTime(date: string): string {
   const currentDate = new Date();
   const dateToCompare = new Date(date);
@@ -29,3 +30,12 @@ export function getElapsedTime(date: string): string {
 
   return parseElapsedTime(seconds);
 }
+
+// debounce receives a function and a delay and returns a debounced function (delayed execution)
+export const debounce = (func: Function, delay: number = 1000) => {
+  let timeout: NodeJS.Timeout;
+  return (...args: any) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func(...args), delay);
+  };
+};
