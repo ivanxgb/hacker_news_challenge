@@ -15,19 +15,18 @@ const key = "faves";
 // useFavesStore is a zustand store that manages news saved in local storage (faves)
 // it communicates with LocalStorage class to save, remove and check if news is already saved
 export const useFavesStore = create<FavesStore>((set) => ({
-  news: [],
-  getAll: () => LocalStorage.getInstance(key).getAll(),
+  news: LocalStorage.getInstance(key).savedNews,
   isSaved: (news: HitsModel) => LocalStorage.getInstance(key).hasNews(news),
   removeNews: (news: HitsModel) => {
     LocalStorage.getInstance(key).removeNews(news);
     set({
-      news: LocalStorage.getInstance(key).getAll(),
+      news: LocalStorage.getInstance(key).savedNews,
     });
   },
   saveNews: (news: HitsModel) => {
     LocalStorage.getInstance(key).saveNews(news);
     set({
-      news: LocalStorage.getInstance(key).getAll(),
+      news: LocalStorage.getInstance(key).savedNews,
     });
   },
 }));
